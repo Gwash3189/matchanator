@@ -1,6 +1,5 @@
 import { spy } from 'sinon'
-import match from ' ./../../lib/index.js'
-
+import match, { func, array } from './../../lib/index.js'
 
 describe('matchanator', () => {
   let matchFunc,
@@ -114,6 +113,22 @@ describe('matchanator', () => {
     })
   })
 
+  context('when there are multiple expected parameters', () => {
+    let logicSpy
+
+    beforeEach(() => {
+      logicSpy = spy()
+      matchFunc = match(
+        [array, func, logicSpy]
+      )([1], () => {})
+    })
+
+    it('runs the corresponding logic', () => {
+      expect(logicSpy)
+        .to.have.been.called
+    })
+  })
+
   context('when given unexpected parameters', () => {
     let trueSpy,
         result
@@ -135,6 +150,55 @@ describe('matchanator', () => {
     it('returns undefined', () => {
       expect(result)
         .to.be.undefined
+    })
+  })
+
+  describe('when given a function as a matcher', () => {
+    let matcherSpy
+    beforeEach(() => {
+      matcherSpy = spy()
+      matchFunc = match(
+        [matcherSpy, () => {}]
+      )
+      matchFunc({})
+    })
+
+    it('runs that function', () => {
+      expect(matcherSpy)
+        .to.have.been.called
+    })
+
+    context('when that function returns true', () => {
+      let logicSpy
+      beforeEach(() => {
+        logicSpy = spy()
+        matchFunc = match(
+          [() => true, logicSpy]
+        )
+        matchFunc({})
+      })
+
+
+      it('calls the provided logic', () => {
+        expect(logicSpy)
+          .to.have.been.called
+      })
+    })
+
+    context('when that function returns false', () => {
+      let logicSpy
+      beforeEach(() => {
+        logicSpy = spy()
+        matchFunc = match(
+          [() => false, logicSpy]
+        )
+        matchFunc({})
+      })
+
+      it('does not calls the provided logic', () => {
+          expect(logicSpy)
+            .to.not.have.been.called
+      })
     })
   })
 })
