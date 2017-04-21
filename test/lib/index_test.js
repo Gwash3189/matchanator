@@ -147,14 +147,15 @@ describe('Matchanator', () => {
         .to.have.not.been.called
     })
 
-    it('returns undefined', () => {
+    it('returns null', () => {
       expect(result)
-        .to.be.undefined
+        .to.be.null
     })
   })
 
   describe('when given a function as a matcher', () => {
     let matcherSpy
+
     beforeEach(() => {
       matcherSpy = spy()
       matchFunc = match(

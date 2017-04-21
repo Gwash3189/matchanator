@@ -15,6 +15,7 @@ While this is a language level construct in other languages, we can still achiev
 
 ### Match
 _(...matchers) => (...params) => any_
+
 The main interface for matchanator. It takes _matcher_ definitions and returns a function that will match against these definitions and run the corresponding function body.
 
 
@@ -88,14 +89,12 @@ import match, {
 } from 'matchanator'
 
 const head = match(
-  [array, ([h, ..._]) => h),
-  [emptyArray, (empty) => empty),
-  [any, () => undefined)
+  [array, ([h, ..._]) => h],
+  [emptyArray, (empty) => empty]
 )
 
 head([1, 2]) // 1
 head([]) // []
-head(1) // undefined
 ```
 ##### Type checkers
 
@@ -118,4 +117,23 @@ const square = match(
   [nan, (nan) => nan],
   [notNan, (x) => x * x]
 )
+```
+
+#### Not finding a match
+
+When a match is not found a `console.warn` is issued with the originaly provided matchers, the provided parameters. An example is below.
+
+```
+const square = match(
+  [number, (x) => x * x]
+)
+
+square('1')
+// Given the matches of: function () {
+//          return typeof n === 'number'
+//        }, (x) => x * x,
+// Given the provided params: [
+//  {}
+// ],
+// A match was not found
 ```
