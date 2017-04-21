@@ -1,7 +1,7 @@
 import { spy } from 'sinon'
-import match, { func, array } from './../../lib/index.js'
+import match, { func, array } from './../../lib/'
 
-describe('matchanator', () => {
+describe('Matchanator', () => {
   let matchFunc,
       trueSpy,
       falseSpy
