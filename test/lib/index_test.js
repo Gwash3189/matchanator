@@ -1,5 +1,5 @@
 import { spy } from 'sinon'
-import match, { func, array } from './../../lib/'
+import match, { func, array, string } from './../../lib/'
 
 describe('Matchanator', () => {
   let matchFunc,
@@ -49,6 +49,40 @@ describe('Matchanator', () => {
     it('can do partial matches', () => {
       expect(trueSpy)
         .to.have.been.called
+    })
+
+    context('when the object has type checking functions as properties', () => {
+      context('when the type checking function returns true', () => {
+        beforeEach(() => {
+          trueSpy = spy(() => 'hello')
+          matchFunc = match(
+            [{ name: string }, trueSpy]
+          )
+
+          matchFunc({ name: 'Adam' })
+        })
+
+        it('calls the corresponding function body', () => {
+          expect(trueSpy)
+            .to.have.been.called
+        })
+      })
+
+      context('when the type checking function returns false', () => {
+        beforeEach(() => {
+          trueSpy = spy(() => 'hello')
+          matchFunc = match(
+            [{ name: string }, trueSpy]
+          )
+
+          matchFunc({ name: 1 })
+        })
+
+        it.only('does not call the corresponding function body', () => {
+          expect(trueSpy)
+            .to.not.have.been.called
+        })
+      })
     })
 
     context('when the object has nested properties', () => {
