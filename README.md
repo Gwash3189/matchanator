@@ -7,11 +7,43 @@ Multiple function heads with pattern matching
 
 Pattern matching is a powerful artefact of (typically) functional programming languages. While we have some of these items in JavaScript, we don't have the ability to express exact value matches within function definitions.
 
-The idea comes from Elixir (Erlang) where a function is identified by it's name and it's arity (number of parameters). That means that the function `hello (name)` is different from the function `hello (first, last)`. While this isn't anything special, the real power comes from providing pattern matches within the functions head.
-
-While this is a language level construct in other languages, we can still achieve this in JavaScript through functions. Matchanator is just that, a higher order function that takes parameter and function definitions and only runs one matching result. If a result is not found, a warning issued.
+While this is a language level construct in other languages, we can still achieve this in JavaScript through functions. Matchanator is just that, **a higher order function** that takes **parameter and function definitions** and **only runs one matching result**. If a result is not found, a warning issued.
 
 ## Usage
+
+### Examples
+
+#### Simplify State Transitions
+
+```
+import match, { string, number } from 'matchanator'
+
+const transition = match(
+  [{ user: { name: string, id: number }, authenticated: true }, (state) => redirectToProfile(state)]
+  [{ user: { authenticated: false } }, (state) => redirectToLoginPage(state)]
+)
+```
+
+#### Reduce `if` Branching
+
+From
+```
+import match, { not, nil, any, emptyArray, array } from 'matchanator'
+
+const pgCallbackWrapper = (f) => match(
+  [not(nil), any, (error, _) => console.error(error)], // when there is an error
+  [nil, { rows: not(emptyArray) }, (_, empty) => console.log('no results')], // no error, but no results either
+  [nil, { rows: array }, (_ results) => f(results.rows)] // no error, but results this time
+)
+
+const database = (query, data, callback) => pg.client(query, data, pgCallbackWrapper(callback))
+
+database(
+  'select * from users where name = $1::string',
+  ['Adam'],
+  (results) => results.each(name => console.log(name))
+)
+```
 
 ### Match
 _(...matchers) => (...params) => any_
@@ -137,3 +169,8 @@ square('1')
 // ],
 // A match was not found
 ```
+
+## Roadmap
+- [ ] Break type checking functions out into their own repository
+- [ ] Allow type checking functions from within arrays
+- [ ] Improve 'no match found' warning
