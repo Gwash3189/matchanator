@@ -2,7 +2,7 @@
   "name": "matchanator",
   "version": "1.0.3",
   "description": "better than switch statments",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "repository": "''",
   "author": "Adam Beck",
   "license": "MIT",
@@ -13,7 +13,8 @@
     "build:watch": "babel lib --out-dir dist --watch",
     "clean": "rm -rf ./dist; mkdir ./dist",
     "lint": "eslint lib",
-    "lint:fix": "eslint lib --fix"
+    "lint:fix": "eslint lib --fix",
+    "postinstall": "npm run build"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
