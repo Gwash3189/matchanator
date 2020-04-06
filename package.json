@@ -13,25 +13,45 @@
     "build:watch": "babel lib --out-dir dist --watch",
     "clean": "rm -rf ./dist; mkdir ./dist",
     "lint": "eslint lib",
-    "lint:fix": "eslint lib --fix",
-    "postinstall": "npm run build"
+    "lint:fix": "eslint lib --fix"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "clearMocks": true,
+    "testMatch": [
+      "<rootDir>/test/**/*_test.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageThreshold": {
+      "global": {
+        "lines": 94,
+        "branches": 93
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "reporters": [
+      "default"
+    ]
   },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-preset-env": "^1.1.8",
-    "babel-register": "^6.22.0",
-    "chai": "^3.5.0",
-    "eslint": "^3.19.0",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "mocha": "^3.2.0",
-    "sinon": "^1.17.7",
-    "sinon-chai": "^2.8.0"
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@types/jest": "^25.2.1",
+    "babel-jest": "^25.2.6",
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "jest": "^25.2.7"
   },
   "dependencies": {
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-node": "^4.2.2",
     "lodash": "^4.17.4"
   }
 }
