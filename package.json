@@ -1,0 +1,65 @@
+{
+  "name": "feproblem1",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "jest test",
+    "test:watch": "jest test --watch",
+    "test:coverage": "jest test --coverage",
+    "clean": "rm -rf dist/*",
+    "compile": "yarn tsc",
+    "lint": "eslint src/",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/preset-react": "^7.7.0",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^13.11.0",
+    "babel-jest": "^24.9.0",
+    "chai": "^4.2.0",
+    "chai-jest-mocks": "^1.2.4",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "jest": "^24.9.0"
+  },
+  "dependencies": {
+    "@babel/preset-typescript": "^7.7.4",
+    "@types/jest": "^24.0.23",
+    "typescript": "^3.7.3"
+  },
+  "jest": {
+    "setupFilesAfterEnv": ["<rootDir>/test/support/setup.js"],
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "clearMocks": true,
+    "testMatch": [
+      "<rootDir>/test/**/*-test.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageThreshold": {
+      "global": {
+        "lines": 94,
+        "branches": 93
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "reporters": [
+      "default"
+    ]
+  }
+}
