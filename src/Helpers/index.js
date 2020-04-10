@@ -5,7 +5,7 @@ import { object, func } from './../Types'
 
 const isFunction = func
 const isObject = object
-const partialMatch = (leftObject, parameters = {}) => Object.keys(leftObject)
+const partialMatch = (leftObject, parameters) => Object.keys(leftObject)
   .some(key => {
     const leftItem = leftObject[key]
     const parameter = parameters[key]
@@ -17,8 +17,6 @@ const partialMatch = (leftObject, parameters = {}) => Object.keys(leftObject)
     if (isFunction(leftItem)) {
       return leftItem(parameter)
     }
-
-    return leftObject[key] === parameters[key]
   })
 const allExceptLast = (arr) => take(arr, arr.length - 1)
 const stopOnTrue = (x, func) => {
