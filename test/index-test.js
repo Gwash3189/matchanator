@@ -16,7 +16,7 @@ describe('Matchanator', () => {
     result = matcher(inputValue)
   })
 
-  it('returns the nested return value', () => {
+  it('returns the expected return value', () => {
     expect(result).to.equal(returnValue)
   })
 
@@ -33,6 +33,45 @@ describe('Matchanator', () => {
 
     it('runs the provided predicate', () => {
       expect(mock).to.have.beenCalled()
+    })
+  })
+
+  describe('when the input value is not matched', () => {
+    let consoleWarnSpy,
+        mock
+
+    beforeEach(() => {
+      mock = jest.fn()
+      consoleWarnSpy = jest.spyOn(console, 'warn')
+      inputValue = 1
+      matcher = match(
+        [2, mock]
+      )
+      matcher(inputValue)
+    })
+
+    afterEach(() => {
+      consoleWarnSpy.mockRestore()
+    })
+
+    it('it does log a warning', () => {
+      expect(consoleWarnSpy).to.have.beenCalled()
+    })
+
+    it('does not call the provided function', () => {
+      expect(mock).to.have.not.beenCalled()
+    })
+  })
+
+  describe('when an input value is not provided', () => {
+    beforeEach(() => {
+      matcher = match(
+        [number, (x) => x]
+      )
+    })
+
+    it('it doesn\'t blow up', () => {
+      expect(matcher).to.not.throw()
     })
   })
 
@@ -98,18 +137,18 @@ describe('Matchanator', () => {
       })
 
       describe('when the provided function returns undefined', () => {
-        let warnSpy
+        let consoleWarnSpy
 
         beforeEach(() => {
-          warnSpy = jest.spyOn(console, 'warn')
+          consoleWarnSpy = jest.spyOn(console, 'warn')
         })
 
         afterEach(() => {
-          warnSpy.mockRestore()
+          consoleWarnSpy.mockRestore()
         })
 
         it('it does not log a warning', () => {
-          expect(warnSpy).to.have.not.beenCalled()
+          expect(consoleWarnSpy).to.have.not.beenCalled()
         })
       })
     })
