@@ -1,25 +1,35 @@
 import take from 'lodash/take'
 import some from 'lodash/some'
 import isEqual from 'lodash/isEqual'
-import { object, func } from './../Types'
+import { object, func } from '../Types'
+
+type LeftObject = {
+  [key: string]: LeftObject | Function
+}
+
+type Parameters = {
+  [key: string]: Parameters | any
+}
 
 const isFunction = func
 const isObject = object
-const partialMatch = (leftObject, parameters) => Object.keys(leftObject)
-  .some(key => {
+const partialMatch = (leftObject: LeftObject, parameters: Parameters) => Object.keys(leftObject)
+  .some((key: string): boolean => {
     const leftItem = leftObject[key]
     const parameter = parameters[key]
 
     if (isObject(leftItem)) {
-      return partialMatch(leftObject[key], parameters[key])
+      return partialMatch(leftItem as LeftObject, parameter as Parameters)
     }
 
     if (isFunction(leftItem)) {
-      return leftItem(parameter)
+      return (leftItem as Function)(parameter)
     }
+
+    return false
   })
-const allExceptLast = (arr) => take(arr, arr.length - 1)
-const stopOnTrue = (x, func) => {
+const allExceptLast = (arr: Array<any>) => take(arr, arr.length - 1)
+const stopOnTrue = (x: any, func: (...x: any) => boolean) => {
   let returnedValue = null
   let i = 0
 
@@ -32,8 +42,8 @@ const stopOnTrue = (x, func) => {
 
   return returnedValue
 }
-const equals = (leftArray, paramsArray) => leftArray
-.every((leftItem, index) => {
+const equals = (leftArray: Array<any>, paramsArray: Array<any>) => leftArray
+.every((leftItem: any, index: number) => {
   const param = paramsArray[index]
 
   if (isObject(leftItem)) {

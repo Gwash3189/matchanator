@@ -1,4 +1,4 @@
-export const func = (f: Function) => typeof f === 'function'
+export const func = (f: any) => typeof f === 'function'
 export const string = (s: string) => typeof s === 'string'
 export const number = (n: number) => typeof n === 'number'
 export const array = (a: any) => Array.isArray(a)
